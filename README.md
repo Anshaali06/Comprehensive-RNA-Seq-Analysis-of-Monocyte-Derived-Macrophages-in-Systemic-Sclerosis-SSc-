@@ -1,5 +1,5 @@
 # Comprehensive-RNA-Seq-Analysis-of-Monocyte-Derived-Macrophages-in-Systemic-Sclerosis(SSc)
-Comprehensive RNA-Seq workflow for investigating gene expression changes in monocyte-derived macrophages associated with Systemic Sclerosis (SSc), including quality control, alignment, quantification, differential expression analysis, and functional interpretation.
+Comprehensive RNA-Seq workflow for investigating gene expression changes in monocyte-derived macrophages associated with Systemic Sclerosis (SSc), including quality control, alignment, quantification and differential expression analysis.
 ## Project Overview
 
 This project focuses on the comparative transcriptomic analysis of *Control samples and monocyte-derived macrophages* using RNA-seq data.
@@ -17,9 +17,7 @@ The specific objectives are:
 - To generate a gene-level count matrix.
 - To identify Differentially Expressed Genes (DEGs) between Control and MDM samples.
 - To classify DEGs into upregulated and downregulated genes.
-- To annotate the identified genes using Ensembl gene identifiers.
-- To visualize the transcriptional differences between the two conditions.
-- To provide a basis for downstream functional and biological interpretation.
+  
 ## Study Comparison
 
 The RNA-seq analysis compares two experimental conditions:
@@ -35,38 +33,44 @@ The RNA-seq analysis compares two experimental conditions:
 ```text
 SRA Accession Data
         ↓
-SRA Toolkit – prefetch
-        ↓
-SRA Files
+SRA Toolkit
+(prefetch)
         ↓
 SRA → FASTQ Conversion
+(fasterq-dump)
         ↓
 FASTQ Files
         ↓
-FastQC
+Quality Control
+(FastQC)
         ↓
-MultiQC
+Quality Aggregation
+(MultiQC)
         ↓
 Read Trimming
-   [Skipped]
+(Not Required)
         ↓
-Alignment to Human Reference Genome
+Read Alignment
+(Human Reference Genome)
         ↓
-SAM / BAM Alignment Files
+SAM/BAM Files
         ↓
-featureCounts
+Gene-level Quantification
+(featureCounts)
         ↓
-Gene-level Count Matrix
+Raw Count Matrix
         ↓
 Sample Metadata
+(Control vs MDM)
         ↓
-DESeq2 Differential Expression Analysis
+Low-count Filtering
         ↓
-Differentially Expressed Genes (DEGs)
+Differential Expression Analysis
+(DESeq2)
+        ↓
+DEG Identification
         ↓
 Upregulated / Downregulated Genes
-        ↓
-Ensembl Gene Annotation
         ↓
 PCA Plot
         ↓
@@ -76,5 +80,44 @@ Volcano Plot
         ↓
 Heatmap
         ↓
-Downstream Functional Analysis
+Final Results & Interpretation
+```
 
+## Results Visualization
+
+Four major visualizations were generated to assess differential gene expression:
+
+1. *PCA Plot* – Evaluated sample-level expression patterns and separation between MDM and Control samples.
+2. *MA Plot* – Visualized log2 fold changes across different expression levels.
+3. *Volcano Plot* – Highlighted significantly upregulated and downregulated genes based on fold change and adjusted p-value.
+4. *Heatmap* – Displayed expression patterns of the top 50 differentially expressed genes across all samples.
+
+## Key Findings
+
+- 78,932 genes were initially quantified.
+- 16,288 genes were retained after low-count filtering.
+- 1,775 significant DEGs were identified using padj < 0.1.
+- 935 genes were upregulated.
+- 840 genes were downregulated.
+- PCA, MA plot, Volcano plot, and Heatmap were used to visualize the differential expression patterns.
+
+## Conclusion
+
+This project successfully identified transcriptional differences between *Control and monocyte-derived macrophage (MDM)* samples using RNA-seq differential expression analysis.
+
+A total of *1,775 significant DEGs* were identified, including *935 upregulated* and *840 downregulated genes*. The PCA, MA plot, Volcano plot, and Heatmap provided visual insights into the gene-expression differences between the two conditions.
+
+Overall, the analysis provides a computational overview of transcriptional changes associated with the *monocyte-derived macrophage state*\
+
+## Software & Tools
+## Software & Tools
+- SRA Toolkit
+- FastQC
+- MultiQC
+- Human Reference Genome
+- featureCounts
+- R
+- DESeq2
+- ggplot2
+- pheatmap
+- ggrepel
