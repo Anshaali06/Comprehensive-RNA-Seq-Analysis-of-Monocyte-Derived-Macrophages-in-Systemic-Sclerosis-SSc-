@@ -107,7 +107,7 @@ This project successfully identified transcriptional differences between *Contro
 
 A total of *1,775 significant DEGs* were identified, including *935 upregulated* and *840 downregulated genes*. The PCA, MA plot, Volcano plot, and Heatmap provided visual insights into the gene-expression differences between the two conditions.
 
-Overall, the analysis provides a computational overview of transcriptional changes associated with the *monocyte-derived macrophage state*\
+Overall, the analysis provides a computational overview of transcriptional changes associated with the *monocyte-derived macrophage state*
 
 ## Software & Tools
 ## Software & Tools
