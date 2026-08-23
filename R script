@@ -1,1 +1,88 @@
+# 1. Load required package
+library(DESeq2)
 
+# 2. Read gene count file
+counts <- read.delim(
+  "gene_counts.txt",
+  comment.char = "#",
+  check.names = FALSE
+)
+
+# 3. Check dimensions
+dim(counts)
+
+# 4. Create count matrix
+count_matrix <- counts[, c(1, 7:12)]
+
+# Check dimensions
+dim(count_matrix)
+
+# 5. Remove extra information from gene IDs
+count_matrix[, 1] <- sub("\\..*$", "", count_matrix[, 1])
+
+# 6. Set gene IDs as row names
+rownames(count_matrix) <- count_matrix[, 1]
+
+# Remove gene ID column
+count_matrix <- count_matrix[, -1]
+
+# 7. Check sample names
+colnames(count_matrix)
+
+# 8. Create sample information
+sample_info <- data.frame(
+  condition = factor(
+    c("MDM", "MDM", "MDM",
+      "Control", "Control", "Control")
+  )
+)
+
+# Set sample names
+rownames(sample_info) <- colnames(count_matrix)
+
+# Check sample information
+sample_info
+
+# 9. Create DESeq2 object
+dds <- DESeqDataSetFromMatrix(
+  countData = count_matrix,
+  colData = sample_info,
+  design = ~ condition
+)
+
+# 10. Low-count filtering
+keep <- rowSums(counts(dds) >= 10) >= 3
+
+dds <- dds[keep, ]
+
+# Check dimensions after filtering
+dim(dds)
+
+# 11. Run DESeq2
+dds <- DESeq(dds)
+
+# 12. Obtain differential expression results
+res <- results(dds)
+
+# 13. View results
+head(res)
+
+# 14. Summary of DEGs
+summary(res)
+
+# 15. Check result columns
+colnames(res)
+
+# 16. Select significant genes
+sig <- res[!is.na(res$padj) & res$padj < 0.1, ]
+
+# 17. Separate upregulated genes
+up <- sig[sig$log2FoldChange > 0, ]
+
+# 18. Separate downregulated genes
+down <- sig[sig$log2FoldChange < 0, ]
+
+# 19. Count genes
+nrow(sig)
+nrow(up)
+nrow(down)
