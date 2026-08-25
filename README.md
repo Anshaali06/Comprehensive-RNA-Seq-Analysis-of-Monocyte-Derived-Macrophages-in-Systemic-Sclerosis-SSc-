@@ -1,5 +1,5 @@
 # Comprehensive-RNA-Seq-Analysis-of-Monocyte-Derived-Macrophages-in-Systemic-Sclerosis(SSc)
-Comprehensive RNA-Seq workflow for investigating gene expression changes in monocyte-derived macrophages associated with Systemic Sclerosis (SSc), including quality control, alignment, quantification and differential expression analysis.
+Systemic Sclerosis (SSc) is a chronic autoimmune connective tissue disease characterized by vascular abnormalities, immune dysregulation, and progressive fibrosis. Macrophages play an important role in inflammatory and fibrotic processes associated with SSc.
 ## Project Overview
 
 This project focuses on the comparative transcriptomic analysis of *Control samples and monocyte-derived macrophages* using RNA-seq data.
@@ -17,7 +17,16 @@ The specific objectives are:
 - To generate a gene-level count matrix.
 - To identify Differentially Expressed Genes (DEGs) between Control and MDM samples.
 - To classify DEGs into upregulated and downregulated genes.
-  
+
+ ## Dataset Information
+
+The RNA-seq data used in this project were obtained from the NCBI Gene Expression Omnibus (GEO) dataset GSE104174, titled "Changes in macrophage transcriptome associate with systemic sclerosis and mediate GSDMA contribution to disease risk."
+
+- GEO Accession: GSE104174
+- SRA Accession: SRP118741
+- BioProject: PRJNA411909
+- Organism: Homo sapiens
+- Data type: RNA-seq
 ## Study Comparison
 
 The RNA-seq analysis compares two experimental conditions:
