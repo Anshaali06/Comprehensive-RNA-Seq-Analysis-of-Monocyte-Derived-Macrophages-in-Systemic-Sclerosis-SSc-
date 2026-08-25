@@ -119,13 +119,15 @@ A total of *1,775 significant DEGs* were identified, including *935 upregulated*
 Overall, the analysis provides a computational overview of transcriptional changes associated with the *monocyte-derived macrophage state*
 
 ## Software & Tools
-- SRA Toolkit
-- FastQC
-- MultiQC
-- Human Reference Genome
-- featureCounts
-- R
-- DESeq2
-- ggplot2
-- pheatmap
-- ggrepel
+* SRA Toolkit
+* FastQC
+* MultiQC
+* HISAT2
+* Samtools
+* Human Reference Genome
+* featureCounts
+* R
+* DESeq2
+* ggplot2
+* pheatmap
+* ggrepel
