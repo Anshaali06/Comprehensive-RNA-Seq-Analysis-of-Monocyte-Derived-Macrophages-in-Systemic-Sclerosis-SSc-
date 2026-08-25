@@ -17,16 +17,21 @@ count_matrix <- counts[, c(1, 7:12)]
 # Check dimensions
 dim(count_matrix)
 
-# 5. Remove extra information from gene IDs
-count_matrix[, 1] <- sub("\\..*$", "", count_matrix[, 1])
+# 5. 
+colnames(count_matrix)[-1] <- sub(
+  "_sorted\\.bam$",
+  "",
+  basename(colnames(count_matrix)[-1])
+)
 
-# 6. Set gene IDs as row names
+
+# Gene IDs  row name 
 rownames(count_matrix) <- count_matrix[, 1]
 
-# Remove gene ID column
+# Gene ID column remove 
 count_matrix <- count_matrix[, -1]
-
-# 7. Check sample names
+# Check
+dim(count_matrix)
 colnames(count_matrix)
 
 # 8. Create sample information
@@ -37,7 +42,6 @@ sample_info <- data.frame(
   )
 )
 
-# Set sample names
 rownames(sample_info) <- colnames(count_matrix)
 
 # Check sample information
@@ -49,10 +53,10 @@ dds <- DESeqDataSetFromMatrix(
   colData = sample_info,
   design = ~ condition
 )
+dds
 
 # 10. Low-count filtering
 keep <- rowSums(counts(dds) >= 10) >= 3
-
 dds <- dds[keep, ]
 
 # Check dimensions after filtering
