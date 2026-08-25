@@ -1,1 +1,216 @@
+# Volcano Plot
+library(ggplot2)
+
+# Prepare data
+volcano_df <- as.data.frame(res)
+
+# Set significance
+volcano_df$significance <- "Not significant"
+
+volcano_df$significance[
+  !is.na(volcano_df$padj) &
+  volcano_df$padj < 0.1 &
+  volcano_df$log2FoldChange >= 1
+] <- "Upregulated"
+
+volcano_df$significance[
+  !is.na(volcano_df$padj) &
+  volcano_df$padj < 0.1 &
+  volcano_df$log2FoldChange <= -1
+] <- "Downregulated"
+
+# Volcano plot
+ggplot(
+  volcano_df,
+  aes(
+    x = log2FoldChange,
+    y = -log10(padj),
+    color = significance
+  )
+) +
+  geom_point(alpha = 0.7, size = 1.5) +
+  
+  scale_color_manual(
+    values = c(
+      "Upregulated" = "red",
+      "Downregulated" = "blue",
+      "Not significant" = "grey"
+    )
+  ) +
+  
+  geom_vline(
+    xintercept = c(-1, 1),
+    linetype = "dashed"
+  ) +
+  
+  geom_hline(
+    yintercept = -log10(0.1),
+    linetype = "dashed"
+  ) +
+  
+  labs(
+    title = "Volcano Plot: MDM vs Control",
+    x = "log2 Fold Change",
+    y = "-log10 Adjusted P-value",
+    color = "Significance"
+  ) +
+  
+  theme_minimal() 
+
+#MA Plot
+library(ggplot2)
+
+ma_df <- as.data.frame(res)
+
+ma_df$significance <- "Not significant"
+
+ma_df$significance[
+  !is.na(ma_df$padj) &
+  ma_df$padj < 0.1 &
+  ma_df$log2FoldChange >= 1
+] <- "Upregulated"
+
+ma_df$significance[
+  !is.na(ma_df$padj) &
+  ma_df$padj < 0.1 &
+  ma_df$log2FoldChange <= -1
+] <- "Downregulated"
+
+ggplot(
+  ma_df,
+  aes(
+    x = baseMean,
+    y = log2FoldChange,
+    color = significance
+  )
+) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_x_log10() +
+  scale_color_manual(
+    values = c(
+      "Upregulated" = "red",
+      "Downregulated" = "blue",
+      "Not significant" = "grey"
+    )
+  ) +
+  geom_hline(
+    yintercept = c(-1, 1),
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "MA Plot: MDM vs Control",
+    x = "Mean Expression (baseMean)",
+    y = "log2 Fold Change",
+    color = "Significance"
+  ) +
+  theme_minimal()
+
+#PCA Plot
+library(ggplot2)
+
+pcaData <- plotPCA(
+  vsd,
+  intgroup = "condition",
+  returnData = TRUE
+)
+
+ggplot(
+  pcaData,
+  aes(x = PC1, y = PC2, color = condition)
+) +
+  geom_point(size = 5) +
+
+  geom_text(
+    aes(label = name),
+    vjust = -1,
+    size = 3.5,
+    show.legend = FALSE
+  ) +
+
+  scale_color_manual(
+    values = c(
+      "Control" = "red",
+      "MDM" = "blue"
+    )
+  ) +
+
+  scale_x_continuous(
+    expand = expansion(mult = c(0.20, 0.30))
+  ) +
+
+  scale_y_continuous(
+    expand = expansion(mult = c(0.20, 0.30))
+  ) +
+
+  labs(
+    title = "PCA Plot: MDM vs Control",
+    x = paste0(
+      "PC1: ",
+      round(
+        100 * attr(pcaData, "percentVar")[1],
+        1
+      ),
+      "% variance"
+    ),
+    y = paste0(
+      "PC2: ",
+      round(
+        100 * attr(pcaData, "percentVar")[2],
+        1
+      ),
+      "% variance"
+    ),
+    color = "Condition"
+  ) +
+
+  theme_minimal(base_size = 13) +
+
+  theme(
+    plot.title = element_text(
+      size = 16,
+      face = "bold",
+      hjust = 0.5
+    ),
+    legend.position = "right",
+    plot.margin = margin(
+      20, 40, 20, 40
+    )
+  )
+
+Heatmap -Top 50 DEGs
+library(pheatmap)
+
+top_genes <- rownames(
+  res[order(res$padj, na.last = NA), ]
+)[1:50]
+
+vsd <- vst(
+  dds,
+  blind = FALSE
+)
+
+mat <- assay(vsd)[top_genes, ]
+
+mat <- mat - rowMeans(mat)
+
+annotation_col <- data.frame(
+  Condition = colData(dds)$condition
+)
+
+rownames(annotation_col) <- colnames(dds)
+
+pheatmap(
+  mat,
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  show_rownames = FALSE,
+  show_colnames = TRUE,
+  annotation_col = annotation_col,
+  main = "Top 50 DEGs: MDM vs Control",
+  fontsize = 10,
+  border_color = NA
+)
+
+
+
 
