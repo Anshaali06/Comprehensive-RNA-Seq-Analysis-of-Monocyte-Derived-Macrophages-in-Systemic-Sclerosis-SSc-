@@ -17,7 +17,7 @@ count_matrix <- counts[, c(1, 7:12)]
 # Check dimensions
 dim(count_matrix)
 
-# 5. 
+# 5. cleaning SRR files names
 colnames(count_matrix)[-1] <- sub(
   "_sorted\\.bam$",
   "",
